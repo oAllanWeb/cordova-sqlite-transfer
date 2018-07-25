@@ -1,7 +1,6 @@
-cordova.define("uk.co.workingedge.cordova.plugin.sqliteporter.sqlitePorter", function(require, exports, module) {
 /**
  * Enables data/table structure to be imported/exported from a SQLite database as JSON/SQL
- * @module sqlitePorter
+ * @module sqliteTransfer
  * @author  Dave Alden (http://github.com/dpa99c)
  *
  * Copyright (c) 2015 Working Edge Ltd. (http://www.workingedge.co.uk)
@@ -29,7 +28,7 @@ cordova.define("uk.co.workingedge.cordova.plugin.sqliteporter.sqlitePorter", fun
  *
  */
 (function() {
-    var sqlitePorter = {};
+    var sqliteTransfer = {};
 
     // Default maximum number of statements to use for batch inserts for bulk importing data via JSON.
     var DEFAULT_BATCH_INSERT_SIZE = 250;
@@ -66,7 +65,7 @@ cordova.define("uk.co.workingedge.cordova.plugin.sqliteporter.sqlitePorter", fun
      *  </li>
      * </ul>
      */
-    sqlitePorter.importSqlToDb = function (db, sql, opts){
+    sqliteTransfer.importSqlToDb = function (db, sql, opts){
         opts = opts || {};
         db.transaction(function(tx) {
             try {
@@ -136,7 +135,7 @@ cordova.define("uk.co.workingedge.cordova.plugin.sqliteporter.sqlitePorter", fun
      *  <li>{boolean} dataOnly - if true, only row data will be exported. Otherwise, table structure will also be exported. Defaults to false.</li>
      *  <li>{boolean} structureOnly - if true, only table structure will be exported. Otherwise, row will also be exported. Defaults to false.</li>
      */
-    sqlitePorter.exportDbToSql = function (db, opts){
+    sqliteTransfer.exportDbToSql = function (db, opts){
      opts = opts || {};
         var exportSQL = "", statementCount = 0, filter = "" ,  filterNames = "";
         if (!db.transaction || !db.dbname){
@@ -254,7 +253,7 @@ cordova.define("uk.co.workingedge.cordova.plugin.sqliteporter.sqlitePorter", fun
      *  <li>{boolean} dataOnly - if true, only row data will be exported. Otherwise, table structure will also be exported. Defaults to false.</li>
      *  <li>{boolean} structureOnly - if true, only table structure will be exported. Otherwise, row will also be exported. Defaults to false.</li>
      */
-    sqlitePorter.exportDbToJson = function (db, opts){
+    sqliteTransfer.exportDbToJson = function (db, opts){
         opts = opts || {};
         var json = {}, statementCount = 0, filter = "",  filterNames = "";
         if (!db.transaction || !db.dbname){
@@ -391,7 +390,7 @@ cordova.define("uk.co.workingedge.cordova.plugin.sqliteporter.sqlitePorter", fun
      *  </li>
      * </ul>
      */
-    sqlitePorter.importJsonToDb = function (db, json, opts){
+    sqliteTransfer.importJsonToDb = function (db, json, opts){
         opts = opts || {};
         var mainSql = "", createIndexSql = "";
 
@@ -514,9 +513,9 @@ cordova.define("uk.co.workingedge.cordova.plugin.sqliteporter.sqlitePorter", fun
 
             // If creating indexes, do it in a different transaction after other SQL to optimise performance
             if(createIndexSql){
-                sqlitePorter.importSqlToDb(db, mainSql, extend({}, opts, {
+                sqliteTransfer.importSqlToDb(db, mainSql, extend({}, opts, {
                     successFn:function(mainTotalCount){
-                        sqlitePorter.importSqlToDb(db, createIndexSql, extend({}, opts, {
+                        sqliteTransfer.importSqlToDb(db, createIndexSql, extend({}, opts, {
                             successFn:function(totalCount){
                                 if(opts.successFn){
                                     opts.successFn(mainTotalCount+totalCount);
@@ -531,7 +530,7 @@ cordova.define("uk.co.workingedge.cordova.plugin.sqliteporter.sqlitePorter", fun
                     }
                 }));
             }else{
-                sqlitePorter.importSqlToDb(db, mainSql, opts);
+                sqliteTransfer.importSqlToDb(db, mainSql, opts);
             }
 
         }catch(e){
@@ -567,7 +566,7 @@ cordova.define("uk.co.workingedge.cordova.plugin.sqliteporter.sqlitePorter", fun
      *  </li>
      * </ul>
      */
-    sqlitePorter.wipeDb = function (db, opts){
+    sqliteTransfer.wipeDb = function (db, opts){
         opts = opts || {};
         db.transaction(
             function (transaction) {
@@ -587,7 +586,7 @@ cordova.define("uk.co.workingedge.cordova.plugin.sqliteporter.sqlitePorter", fun
                             }
                         }
                         if(dropStatements.length > 0){
-                            sqlitePorter.importSqlToDb(db, dropStatements.join(separator), opts);
+                            sqliteTransfer.importSqlToDb(db, dropStatements.join(separator), opts);
                         }else if(opts.successFn){
                             opts.successFn(dropStatements.length);
                         }
@@ -694,9 +693,6 @@ cordova.define("uk.co.workingedge.cordova.plugin.sqliteporter.sqlitePorter", fun
         return sql;
     }
 
-    module.exports = sqlitePorter;
+    module.exports = sqliteTransfer;
 }());
 
-
-
-});
