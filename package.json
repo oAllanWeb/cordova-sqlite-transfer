@@ -1,6 +1,6 @@
 {
     "version": "1.0.5",
-    "name": "cordova.plugin.sqlite.transnfer",
+    "name": "cordova.plugin.sqliteTransnfer",
     "cordova_name": "sqlite transfer",
     "description": "Enables importing/exporting of SQLite databases to/from JSON/SQL.",
     "author": "Allan da Silva Extends Dave Alden",
@@ -10,7 +10,7 @@
         "url": "https://github.com/AllanD1/cordova-sqlite-transfer.git"
     },
     "cordova": {
-        "id": "cordova.plugin.sqlite.transnfer",
+        "id": "cordova.plugin.sqliteTransnfer",
         "platforms": [
             "android",
             "amazon-fireos",
