@@ -2,7 +2,7 @@
 <plugin
         xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        id="cordova.plugin.sqlite.transnfer"
+        id="cordova.plugin.sqliteTransnfer"
         version="1.0.5">
     <name>sqlite transfer</name>
     <description>Enables importing/exporting of SQLite databases to/from JSON/SQL.</description>
@@ -17,6 +17,6 @@
     <keywords>ecosystem:cordova,cordova,phonegap,database,sqlite,websql,import,export</keywords>
 
     <js-module name="sqliteTransfer" src="www/sqliteTransfer.js">
-        <clobbers target="cordova.plugin.sqlite.transnfer" />
+        <clobbers target="cordova.plugin.sqliteTransnfer" />
     </js-module>
 </plugin>
