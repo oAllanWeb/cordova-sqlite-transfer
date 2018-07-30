@@ -325,7 +325,7 @@
                                         console.log(tableName)
                                         var tableStructure = trimWhitespace(row.sql.replace("CREATE TABLE " + sqlEscape(tableName), ""));
                                         console.log("<<estrutura>>"+tableStructure)
-                                        console.log(">>"+ row.sql.replace(/\s+/g," ");)
+                                        console.log(">>"+ row.sql.replace(/\s+/g," "))
                                         json.structure.tables[tableName] = row.sql.replace(/\s+/g," ");
                                         statementCount += 2; // One for DROP, one for create
                                     }else{
