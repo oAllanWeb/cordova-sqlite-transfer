@@ -322,11 +322,9 @@
                                 if(row.sql != null && row.sql.indexOf("__") == -1){
                                     if (row.sql.indexOf("CREATE TABLE") != -1){
                                         var tableName = sqlUnescape(trimWhitespace(trimWhitespace(row.sql.replace("CREATE TABLE", "")).split(/ |\(/)[0]));
-                                        if(!isReservedTable(tableName)){
-                                            var tableStructure = trimWhitespace(row.sql.replace("CREATE TABLE " + sqlEscape(tableName), ""));
-                                            json.structure.tables[tableName] = tableStructure.replace(/\s+/g," ");
-                                            statementCount += 2; // One for DROP, one for create
-                                        }
+                                        var tableStructure = trimWhitespace(row.sql.replace("CREATE TABLE " + sqlEscape(tableName), ""));
+                                        json.structure.tables[tableName] = tableStructure.replace(/\s+/g," ");
+                                        statementCount += 2; // One for DROP, one for create
                                     }else{
                                         if(!json.structure.otherSQL){
                                             json.structure.otherSQL = [];
