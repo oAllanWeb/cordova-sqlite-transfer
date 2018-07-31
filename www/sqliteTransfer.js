@@ -27,9 +27,14 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  *
  */
+
 (function() {
     var sqliteTransfer = {};
 
+ String.prototype.replaceAll = function (find, replace) {
+        var str = this;
+        return str.replace(new RegExp(find.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g'), replace);
+    };
     // Default maximum number of statements to use for batch inserts for bulk importing data via JSON.
     var DEFAULT_BATCH_INSERT_SIZE = 250;
 
@@ -325,7 +330,7 @@
 
                                         var tableStructure = trimWhitespace(row.sql.replace("CREATE TABLE " + sqlEscape(tableName), ""));
 
-                                        json.structure.tables[tableName] = {
+                                        json.structure.tables[sqlEscape(tableName)] = {
                                             drop: "DROP TABLE IF EXISTS " + sqlEscape(tableName),
                                             crate: row.sql.replace(/\s+/g," ")
                                         }
@@ -639,7 +644,7 @@
      */
     function sqlEscape(value){
         if(value.match(/[_-]+/)){
-            value = value.replace("'","").replace('"','');
+            value = value.replaceAll('"','').replaceAll("'","");
         }
         return value;
     }
