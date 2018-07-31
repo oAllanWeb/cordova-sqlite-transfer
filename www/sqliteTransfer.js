@@ -322,11 +322,13 @@
                                 if(row.sql != null && row.sql.indexOf("__") == -1){
                                     if (row.sql.indexOf("CREATE TABLE") != -1){
                                         var tableName = sqlUnescape(trimWhitespace(trimWhitespace(row.sql.replace("CREATE TABLE", "")).split(/ |\(/)[0]));
-                                        console.log(tableName)
+
                                         var tableStructure = trimWhitespace(row.sql.replace("CREATE TABLE " + sqlEscape(tableName), ""));
-                                        console.log("<<estrutura>>"+tableStructure)
-                                        console.log(">>"+ row.sql.replace(/\s+/g," "))
-                                        json.structure.tables[tableName] = row.sql.replace(/\s+/g," ");
+
+                                        json.structure.tables[tableName] = {
+                                            drop: "DROP TABLE IF EXISTS " + sqlEscape(tableName),
+                                            crate: row.sql.replace(/\s+/g," ")
+                                        }
                                         statementCount += 2; // One for DROP, one for create
                                     }else{
                                         if(!json.structure.otherSQL){
@@ -401,8 +403,8 @@
             }
             if(json.structure){
                 for(var tableName in json.structure.tables){
-                    mainSql += "DROP TABLE IF EXISTS " + sqlEscape(tableName) + separator
-                        + "CREATE TABLE " + sqlEscape(tableName) + json.structure.tables[tableName] + separator;
+                    mainSql += json.structure.tables[tableName].drop + separator
+                        + json.structure.tables[tableName].create + separator;
                 }
                 if(json.structure.otherSQL){
                     for(var i=0; i<json.structure.otherSQL.length; i++){
