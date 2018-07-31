@@ -73,7 +73,8 @@
                 var totalCount, currentCount;
 
                 var statements = removeComments(sql)
-                    .match(statementRegEx);;
+                    .match(statementRegEx);
+                    console.log()
 
                 if(statements === null || (Array.isArray && !Array.isArray(statements)))
                     statements = [];
@@ -89,6 +90,7 @@
                 function applyStatements() {
                     if (statements.length > 0) {
                         var statement = trimWhitespace(statements.shift());
+
                         tx.executeSql(statement, [], function(){
                             currentCount++;
                             if(opts.progressFn){
@@ -327,7 +329,7 @@
 
                                         json.structure.tables[tableName] = {
                                             drop: "DROP TABLE IF EXISTS " + sqlEscape(tableName),
-                                            crate: row.sql.replace(/\s+/g," ")
+                                            create: row.sql.replace(/\s+/g," ")
                                         }
                                         statementCount += 2; // One for DROP, one for create
                                     }else{
