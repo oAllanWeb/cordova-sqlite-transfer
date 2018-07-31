@@ -332,7 +332,7 @@
 
                                         json.structure.tables[sqlEscape(tableName)] = {
                                             drop: "DROP TABLE IF EXISTS " + sqlEscape(tableName),
-                                            crate: row.sql.replace(/\s+/g," ")
+                                            create: row.sql.replace(/\s+/g," ")
                                         }
                                         statementCount += 2; // One for DROP, one for create
                                     }else{
@@ -643,9 +643,7 @@
      * @return {string} escaped value
      */
     function sqlEscape(value){
-        if(value.match(/[_-]+/)){
-            value = value.replaceAll('"','').replaceAll("'","");
-        }
+        value = value.replaceAll('"','').replaceAll("'","");
         return value;
     }
 
